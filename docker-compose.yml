@@ -1,0 +1,75 @@
+version: "3.7"
+services:
+  app:
+    build:
+      args:
+        user: terehov
+        uid: 1000
+      context: ./docker/app/
+      dockerfile: Dockerfile
+    image: mesh
+    container_name: mesh-app
+    restart: unless-stopped
+    working_dir: /var/www/
+    volumes:
+      - ./src:/var/www
+    networks:
+      - mesh
+
+  db:
+    image: mysql:5.7
+    container_name: mesh-db
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: mesh
+      MYSQL_ROOT_PASSWORD: meshRoot
+      MYSQL_PASSWORD: meshUser
+      MYSQL_USER: mesh
+      SERVICE_TAGS: dev
+      SERVICE_NAME: mysql
+    networks:
+      - mesh
+
+  nginx:
+    image: nginx:alpine
+    container_name: mesh-nginx
+    restart: unless-stopped
+    ports:
+      - 80:80
+    volumes:
+      - ./src:/var/www
+      - ./nginx:/etc/nginx/conf.d/
+    networks:
+      - mesh
+
+  cache:
+    image: redis:alpine
+    container_name: mesh-redis
+    restart: unless-stopped
+    networks:
+      - mesh
+
+  queue:
+    image: rabbitmq:3-alpine
+    container_name: mesh-rabbit
+    restart: unless-stopped
+    networks:
+      - mesh
+
+  manager:
+    image: rabbitmq:3-management
+    container_name: mesh-management
+    restart: unless-stopped
+    environment:
+      RABBITMQ_DEFAULT_USER: admin
+      RABBITMQ_DEFAULT_PASS: admin
+      RABBITMQ_DEFAULT_VHOST: DSrabbitmq
+      RABBITMQ_VM_MEMORY_HIGH_WATERMARK: 1024MB
+    ports:
+      - 8080:15672
+    networks:
+      - mesh
+
+networks:
+  mesh:
+    driver: bridge
