@@ -31,7 +31,7 @@
                 <div id="accordion">
                     @foreach ($rows as $rowDate => $row)
                     <div class="card">
-                      <div class="card-header" id="headingOne">
+                      <div class="card-header" id="heading-{{$rowDate}}">
                         <h5 class="mb-0">
                         <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapse-{{$rowDate}}" aria-expanded="false" aria-controls="collapse-{{$rowDate}}">
                             {{ $rowDate }}
@@ -39,7 +39,7 @@
                         </h5>
                       </div>
 
-                      <div id="collapse-{{$rowDate}}" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                      <div id="collapse-{{$rowDate}}" class="collapse show" aria-labelledby="heading-{{$rowDate}}" data-parent="#accordion">
                         <div class="card-body">
                           <table>
                               <thead>

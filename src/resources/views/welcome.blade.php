@@ -221,6 +221,7 @@
                       <div class="error light">{{ $errors->first('file') }}</div>
                     </div>
                     <button type="submit" class="btn btn-primary">Send</button>
+                    <a href="/rows" class="btn btn-primary">List</a>
                   </form>
             </div>
 
