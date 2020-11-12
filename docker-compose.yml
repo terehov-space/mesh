@@ -9,7 +9,6 @@ services:
       dockerfile: Dockerfile
     image: mesh
     container_name: mesh-app
-    restart: unless-stopped
     working_dir: /var/www/
     volumes:
       - ./src:/var/www
@@ -19,7 +18,6 @@ services:
   db:
     image: mysql:5.7
     container_name: mesh-db
-    restart: unless-stopped
     environment:
       MYSQL_DATABASE: mesh
       MYSQL_ROOT_PASSWORD: meshRoot
@@ -33,7 +31,6 @@ services:
   nginx:
     image: nginx:alpine
     container_name: mesh-nginx
-    restart: unless-stopped
     ports:
       - 80:80
     volumes:
@@ -45,21 +42,18 @@ services:
   cache:
     image: redis:alpine
     container_name: mesh-redis
-    restart: unless-stopped
     networks:
       - mesh
 
   queue:
     image: rabbitmq:3-alpine
     container_name: mesh-rabbit
-    restart: unless-stopped
     networks:
       - mesh
 
   manager:
     image: rabbitmq:3-management
     container_name: mesh-management
-    restart: unless-stopped
     environment:
       RABBITMQ_DEFAULT_USER: admin
       RABBITMQ_DEFAULT_PASS: admin

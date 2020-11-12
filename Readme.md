@@ -9,7 +9,13 @@ docker-compose up -d
 ```
 
 # 3 step
-enter app container and execute
+Init database
 ```
-php artisan migrate:fresh
+docker-compose exec app php artisan migrate
+```
+
+# 4 step
+Init supervisor
+```
+docker-compose exec app /bin/bash service supervisor start
 ```
